@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { PropType } from 'vue';
-import { Tweet } from '../types/index';
+import { PropType } from 'vue'
+import { Tweet } from '../types/index'
 
-const emit = defineEmits(['favorite']);
+const emit = defineEmits(['favorite'])
 
 const props = defineProps({
   username: {
@@ -13,11 +13,11 @@ const props = defineProps({
     type: Object as PropType<Tweet>,
     required: true,
   },
-});
+})
 
 const favoriteTweet = (id: number) => {
-  emit('favorite', id);
-};
+  emit('favorite', id)
+}
 </script>
 
 <template>

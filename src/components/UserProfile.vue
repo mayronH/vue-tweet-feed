@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue';
-import { User } from '../types/index';
-import TweetItem from './TweetItem.vue';
+import { computed, onMounted, ref, watch } from 'vue'
+import { User } from '../types/index'
+import TweetItem from './TweetItem.vue'
 
-const followers = ref(0);
+const followers = ref(0)
 const user = ref<User>({
   id: 1,
   username: 'mayronH',
@@ -41,30 +41,30 @@ const user = ref<User>({
       isFavorite: false,
     },
   ],
-});
+})
 
 function followUser() {
-  followers.value++;
+  followers.value++
 }
 
 function toggleFavorite(id: number) {
-  const favoriteTweet = user.value.tweets.filter((tweet) => tweet.id === id);
+  const favoriteTweet = user.value.tweets.filter((tweet) => tweet.id === id)
   favoriteTweet[0].isFavorite = !favoriteTweet[0].isFavorite
 }
 
 watch(followers, (currentFollowers, oldFollowers) => {
   if (oldFollowers < currentFollowers) {
-    console.log('wah');
+    console.log('wah')
   }
-});
+})
 
 const fullName = computed(() => {
-  return `${user.value.firstName} ${user.value.lastName}`;
-});
+  return `${user.value.firstName} ${user.value.lastName}`
+})
 
 onMounted(() => {
-  followUser();
-});
+  followUser()
+})
 </script>
 
 <template>
