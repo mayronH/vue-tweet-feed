@@ -69,15 +69,15 @@ onMounted(() => {
 
 <template>
   <div class="user-profile">
-    <div class="user-profile-panel">
-      <!-- <h3>{{ fullName }}</h3> -->
+    <section class="user-profile-panel">
       <h1 class="user-profile-username">@{{ user.username }}</h1>
-      <div v-if="user.isAdmin" class="user-profile-admin-badge">Admin</div>
+      <div v-if="user.isAdmin" class="admin-badge">Admin</div>
       <div class="user-profile-followers">
         <strong>Followers: </strong> {{ followers }}
       </div>
-    </div>
-    <div class="user-profile-tweets-wrapper">
+    </section>
+
+    <section class="user-profile-tweets-wrapper">
       <TweetItem
         v-for="tweet in user.tweets"
         :key="tweet.id"
@@ -85,14 +85,14 @@ onMounted(() => {
         :tweet="tweet"
         @favorite="toggleFavorite"
       />
-    </div>
+    </section>
   </div>
 </template>
 
 <style>
 .user-profile {
   display: grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 1fr 2fr;
 
   width: 100%;
 
@@ -103,7 +103,7 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
 
-  margin-right: var(--large-size-fluid);
+  margin-right: var(--small-size-fluid);
   padding: var(--small-size-fluid);
 
   background-color: var(--bg-lighter);
@@ -113,7 +113,7 @@ onMounted(() => {
   box-shadow: var(--box-shadow);
 }
 
-.user-profile-admin-badge {
+.admin-badge {
   font-weight: 200;
 
   background-color: var(--accent2);

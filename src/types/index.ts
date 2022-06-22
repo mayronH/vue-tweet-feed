@@ -15,3 +15,8 @@ export interface Tweet {
   isFavorite: boolean
   created_at: Date
 }
+
+export interface TweetType {
+  value: string
+  name: string
+}
