@@ -1,25 +1,41 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-import UserProfile from './components/UserProfile.vue'
+import users from './services/users'
 </script>
 
 <template>
-<header class="header">
-  <h1>Twitter</h1>
-  <span class="logged-user">mayronH</span>
-</header>
-  <UserProfile />
+  <header class="header">
+    <router-link to="/" class="logo">
+      <h1>Twitter</h1>
+    </router-link>
+    <nav role="menubar">
+      <ul>
+        <li v-for="(user, index) in users" :key="index" role="none">
+          <router-link
+            role="menuitem"
+            :to="{ name: 'user', params: { id: user.id } }"
+            >{{ user.username }}</router-link
+          >
+        </li>
+      </ul>
+    </nav>
+    <span class="logged-user">mayronH</span>
+  </header>
+
+  <router-view />
 </template>
 
 <style>
 #app {
   display: grid;
+  grid-template-rows: 1fr 6fr;
+  grid-auto-rows: min-content;
 
   min-height: 100vh;
 }
 
-.header{
+.header {
   background-color: var(--bg-lighter);
 
   padding: var(--extra-small-size-fluid) var(--medium-size-fluid);
@@ -30,6 +46,28 @@ import UserProfile from './components/UserProfile.vue'
   justify-content: space-between;
 
   width: 100%;
+}
+
+.logo {
+  text-decoration: none;
+  color: inherit;
+}
+
+.header nav ul {
+  list-style: none;
+
+  display: flex;
+  gap: 0.5rem;
+}
+
+.header nav a {
+  text-decoration: none;
+
+  color: var(--accent);
+}
+
+.header nav .router-link-active {
+  color: var(--accent2);
 }
 
 select {

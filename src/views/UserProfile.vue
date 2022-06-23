@@ -1,45 +1,28 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, onBeforeUpdate, ref } from 'vue'
 import { User } from '../types/index'
-import TweetItem from './TweetItem.vue'
-import CreateTweet from './CreateTweet.vue'
+import TweetItem from '../components/TweetItem.vue'
+import CreateTweet from '../components/CreateTweet.vue'
+import { useRoute } from 'vue-router'
+import users from '../services/users'
+import router from '../router'
+
+const route = useRoute()
 
 const followers = ref(0)
 const user = ref<User>({
-  id: 1,
-  username: 'mayronH',
-  firstName: 'Mayron',
-  lastName: 'Carvalho',
-  email: 'mayron.hen@gmail.com',
-  isAdmin: true,
-  tweets: [
-    {
-      id: 1,
-      content: 'My First Tweet',
-      created_at: new Date(),
-      isHidden: false,
-      isFavorite: false,
-    },
-    {
-      id: 2,
-      content: 'Kenobi is very good',
-      created_at: new Date(),
-      isHidden: false,
-      isFavorite: false,
-    },
-    {
-      id: 3,
-      content: 'Rise of Skywalker is shit',
-      created_at: new Date(),
-      isHidden: false,
-      isFavorite: false,
-    },
-  ],
+  id: 0,
+  username: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  isAdmin: false,
+  tweets: [],
 })
 
-function followUser() {
-  followers.value++
-}
+// function followUser() {
+//   followers.value++
+// }
 
 function toggleFavorite(id: number) {
   const favoriteTweet = user.value.tweets.filter((tweet) => tweet.id === id)
@@ -62,13 +45,22 @@ function addNewTweet(content: string) {
 //   }
 // })
 
-// const fullName = computed(() => {
-//   return `${user.value.firstName} ${user.value.lastName}`
-// })
+const userId = computed(() => route.params.id)
 
-// onMounted(() => {
-//   followUser()
-// })
+onBeforeUpdate(() => {
+  if (userId.value) {
+    const filteredUser = users.filter((user: User) => {
+      return user.id == Number(userId.value)
+    })
+
+    if(filteredUser.length == 0){
+        router.push({name: 'Not Found'})
+    } else {
+        user.value = filteredUser[0]
+    }
+
+  }
+})
 </script>
 
 <template>
@@ -109,8 +101,8 @@ function addNewTweet(content: string) {
   padding: var(--large-size-fluid) var(--medium-size-fluid);
 }
 
-.user-panel{
-    margin-right: var(--small-size-fluid);
+.user-panel {
+  margin-right: var(--small-size-fluid);
 }
 
 .user-profile-panel {
