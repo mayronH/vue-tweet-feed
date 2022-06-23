@@ -5,15 +5,31 @@ import UserProfile from './components/UserProfile.vue'
 </script>
 
 <template>
+<header class="header">
+  <h1>Twitter</h1>
+  <span class="logged-user">mayronH</span>
+</header>
   <UserProfile />
 </template>
 
 <style>
 #app {
   display: grid;
-  place-items: center;
 
   min-height: 100vh;
+}
+
+.header{
+  background-color: var(--bg-lighter);
+
+  padding: var(--extra-small-size-fluid) var(--medium-size-fluid);
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
 }
 
 select {
@@ -48,7 +64,7 @@ select::-ms-expand {
 
   cursor: pointer;
 
-  background-color: var(--bg-body);
+  background-color: var(--bg-lighter);
 
   display: grid;
   grid-template-areas: 'select';

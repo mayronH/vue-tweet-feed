@@ -2,6 +2,8 @@
 import { ref } from 'vue';
 import { TweetType } from '../types/index'
 
+const emit = defineEmits(['addTweet'])
+
 const options = ref<TweetType[]>([
   {
     value: 'draft',
@@ -14,7 +16,10 @@ const options = ref<TweetType[]>([
 ])
 
 function createNewTweet() {
-  console.log('wah')
+  if(newTweetContent.value && newTweetType.value !== 'draft'){
+    emit('addTweet', newTweetContent.value)
+    newTweetContent.value = ''
+  }
 }
 
 const newTweetContent = ref('')
@@ -24,7 +29,7 @@ const newTweetType = ref('instant')
 <template>
   <form class="user-profile-create-tweet" @submit.prevent="createNewTweet">
         <label for="new_tweet">New Tweet</label>
-        <textarea id="new_tweet" rows="4" v-model="newTweetContent"></textarea>
+        <textarea id="new_tweet" v-model="newTweetContent" rows="4"></textarea>
 
         <div class="type">
           <label for="new_tweet_type">Type</label>
@@ -62,7 +67,7 @@ const newTweetType = ref('instant')
 
   width: 100%;
 
-  background-color: var(--bg-body);
+  background-color: var(--bg-lighter);
 
   box-shadow: var(--box-shadow);
 

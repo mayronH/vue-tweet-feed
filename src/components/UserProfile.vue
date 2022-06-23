@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from 'vue'
+import { ref } from 'vue'
 import { User } from '../types/index'
 import TweetItem from './TweetItem.vue'
+import CreateTweet from './CreateTweet.vue'
 
 const followers = ref(0)
 const user = ref<User>({
@@ -21,20 +22,13 @@ const user = ref<User>({
     },
     {
       id: 2,
-      content: 'Twitter is amazing',
-      created_at: new Date(),
-      isHidden: false,
-      isFavorite: false,
-    },
-    {
-      id: 3,
       content: 'Kenobi is very good',
       created_at: new Date(),
       isHidden: false,
       isFavorite: false,
     },
     {
-      id: 4,
+      id: 3,
       content: 'Rise of Skywalker is shit',
       created_at: new Date(),
       isHidden: false,
@@ -52,28 +46,44 @@ function toggleFavorite(id: number) {
   favoriteTweet[0].isFavorite = !favoriteTweet[0].isFavorite
 }
 
-watch(followers, (currentFollowers, oldFollowers) => {
-  if (oldFollowers < currentFollowers) {
-    console.log('wah')
-  }
-})
+function addNewTweet(content: string) {
+  user.value.tweets.unshift({
+    id: user.value.tweets.length + 1,
+    created_at: new Date(),
+    isFavorite: false,
+    isHidden: false,
+    content: content,
+  })
+}
 
-const fullName = computed(() => {
-  return `${user.value.firstName} ${user.value.lastName}`
-})
+// watch(followers, (currentFollowers, oldFollowers) => {
+//   if (oldFollowers < currentFollowers) {
+//     console.log('wah')
+//   }
+// })
 
-onMounted(() => {
-  followUser()
-})
+// const fullName = computed(() => {
+//   return `${user.value.firstName} ${user.value.lastName}`
+// })
+
+// onMounted(() => {
+//   followUser()
+// })
 </script>
 
 <template>
   <div class="user-profile">
-    <section class="user-profile-panel">
-      <h1 class="user-profile-username">@{{ user.username }}</h1>
-      <div v-if="user.isAdmin" class="admin-badge">Admin</div>
-      <div class="user-profile-followers">
-        <strong>Followers: </strong> {{ followers }}
+    <section class="user-panel">
+      <div class="user-profile-panel">
+        <h1 class="user-profile-username">@{{ user.username }}</h1>
+        <div v-if="user.isAdmin" class="admin-badge">Admin</div>
+        <div class="user-profile-followers">
+          <strong>Followers: </strong> {{ followers }}
+        </div>
+      </div>
+
+      <div class="user-create-tweet">
+        <CreateTweet @add-tweet="addNewTweet" />
       </div>
     </section>
 
@@ -99,11 +109,14 @@ onMounted(() => {
   padding: var(--large-size-fluid) var(--medium-size-fluid);
 }
 
+.user-panel{
+    margin-right: var(--small-size-fluid);
+}
+
 .user-profile-panel {
   display: flex;
   flex-direction: column;
 
-  margin-right: var(--small-size-fluid);
   padding: var(--small-size-fluid);
 
   background-color: var(--bg-lighter);
@@ -129,5 +142,6 @@ onMounted(() => {
 .user-profile-tweets-wrapper {
   display: grid;
   gap: var(--extra-small-size-fluid);
+  grid-auto-rows: min-content;
 }
 </style>
