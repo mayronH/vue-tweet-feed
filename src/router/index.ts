@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { userStore } from '../stores/user'
 
 const routes = [
   {
@@ -44,10 +45,11 @@ const router = createRouter({
 })
 
 router.beforeEach(async(to, _, next) => {
-  const isAdmin = false;
+  const store = userStore()
+
   const requiresAdmin = to.matched.some(record => record.meta.requiresAdmin);
 
-  if (requiresAdmin && !isAdmin) next({ name: 'home' });
+  if (requiresAdmin && !store.isSetUserAdmin) next({ name: 'home' });
   else next();
 
 })

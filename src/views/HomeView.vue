@@ -28,8 +28,18 @@ main{
     place-items: center;
 }
 
+.banner{
+  background: url('https://picsum.photos/seed/nier_automata/1920/1080');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+  width: 100%;
+  min-height: 300px;
+}
+
 .about{
-    padding: var(--extra-small-size-fluid) var(--large-size-fluid);
+    padding: var(--small-size-fluid) var(--large-size-fluid);
 }
 
 .about h1{

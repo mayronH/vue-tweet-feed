@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, onBeforeUpdate, ref } from 'vue'
+import { computed, onMounted, onUpdated, ref } from 'vue'
 import { User } from '../types/index'
 import TweetItem from '../components/TweetItem.vue'
 import CreateTweet from '../components/CreateTweet.vue'
@@ -20,10 +20,6 @@ const user = ref<User>({
   tweets: [],
 })
 
-// function followUser() {
-//   followers.value++
-// }
-
 function toggleFavorite(id: number) {
   const favoriteTweet = user.value.tweets.filter((tweet) => tweet.id === id)
   favoriteTweet[0].isFavorite = !favoriteTweet[0].isFavorite
@@ -39,28 +35,24 @@ function addNewTweet(content: string) {
   })
 }
 
-// watch(followers, (currentFollowers, oldFollowers) => {
-//   if (oldFollowers < currentFollowers) {
-//     console.log('wah')
-//   }
-// })
-
 const userId = computed(() => route.params.id)
 
-onBeforeUpdate(() => {
+function loadUser() {
   if (userId.value) {
     const filteredUser = users.filter((user: User) => {
       return user.id == Number(userId.value)
     })
 
-    if(filteredUser.length == 0){
-        router.push({name: 'Not Found'})
+    if (filteredUser.length == 0) {
+      router.push({ name: 'Not Found' })
     } else {
-        user.value = filteredUser[0]
+      user.value = filteredUser[0]
     }
-
   }
-})
+}
+
+onUpdated(() => loadUser())
+onMounted(() => loadUser())
 </script>
 
 <template>

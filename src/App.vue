@@ -1,7 +1,17 @@
 <script setup lang="ts">
 // This starter template is using Vue 3 <script setup> SFCs
 // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
+import { computed } from 'vue'
 import users from './services/users'
+import { userStore } from './stores/user'
+
+const store = userStore()
+
+if (Object.entries(store.user).length == 0) {
+  store.setUser(users[0])
+}
+
+const storedUser = computed(() => store.user)
 </script>
 
 <template>
@@ -20,7 +30,7 @@ import users from './services/users'
         </li>
       </ul>
     </nav>
-    <span class="logged-user">mayronH</span>
+    <span class="logged-user">@{{ storedUser.username }}</span>
   </header>
 
   <router-view />
